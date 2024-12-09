@@ -28,19 +28,6 @@ const contractABI = [
   },
   {
     inputs: [],
-    name: "amount",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "getBalance",
     outputs: [
       {
@@ -99,32 +86,35 @@ export const transferEther = async (
     // Send the transaction
     const tx = await contract.methods.sendEther(recipient).send({
       from: account,
-      value: amountInWei,
+      value: amountInWei, // Send the amount as value in Wei
     });
 
-    const receipt = await web3.eth.getTransactionReceipt(tx.transactionHash);
-    if (receipt.status) {
+    // Check the receipt status
+    if (tx.status) {
       const balanceInWei = await web3.eth.getBalance(accounts[0]);
-      // Convert balance from Wei to Ether
       const balanceInEther = web3.utils.fromWei(balanceInWei, "ether");
       setBalance(balanceInEther);
-      let transactions = JSON.parse(sessionStorage.getItem("transactions"));
-      console.log(tx);
-      let newTx = new Object();
-      newTx.recipient = tx.to.slice(0, 5) + "..." + tx.to.slice(-4);
-      newTx.amount = web3.utils.fromWei(amountInWei, "ether");
-      newTx.transactionHash = tx.blockHash;
+
+      let transactions =
+        JSON.parse(sessionStorage.getItem("transactions")) || [];
+      let newTx = {
+        recipient: recipient.slice(0, 5) + "..." + recipient.slice(-4),
+        amount: web3.utils.fromWei(amountInWei, "ether"),
+        transactionHash: tx.transactionHash,
+      };
 
       transactions.push(newTx);
-      console.log(transactions);
-      // sessionStorage.setItem("transactions", JSON.stringify(transactions));
+      sessionStorage.setItem("transactions", JSON.stringify(transactions));
+
       setMessage(`Transaction successful!`);
       setAmount("");
     } else {
       setMessage(`Transaction failed!`);
+      throw new Error("Transaction failed");
     }
   } catch (error) {
     setMessage(`Error: ${error.message}`);
+    throw new Error(error);
   }
 };
 

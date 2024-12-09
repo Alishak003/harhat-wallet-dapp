@@ -50,7 +50,7 @@ const App = ({
     setTimeout(() => {
       setMessage("");
       setNftMessage("");
-    }, 10000);
+    }, 1000);
   }, [message, nftMessage]);
   const columns = [
     {
@@ -59,7 +59,7 @@ const App = ({
       key: "recipient",
     },
     {
-      title: "Amount (ETH)",
+      title: "Amount (GO)",
       dataIndex: "amount",
       key: "amount",
     },
@@ -113,6 +113,9 @@ const App = ({
               id="tokenURI"
               onChange={(e) => setNftUri(e.target.value)}
             />
+            {nftUri && (
+              <img src={nftUri} alt="NFT Preview" className="nftPreview" />
+            )}
             <button className="mintButton" onClick={() => handleMintNft()}>
               Mint NFT
             </button>

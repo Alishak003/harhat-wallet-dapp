@@ -2,8 +2,6 @@
 pragma solidity ^0.8.27;
 
 contract EtherTransfer {
-    uint public amount;
-
     event Sent(
         address indexed sender,
         address indexed recipient,

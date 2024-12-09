@@ -25,6 +25,9 @@ function Home({
     }
   }, [account, balance]);
 
+  useEffect(()=>{
+
+  },[])
   async function connect() {
     const walletInfo = await init();
     if (walletInfo) {
