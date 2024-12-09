@@ -1,4 +1,4 @@
-MY CRYPTO WALLET (TRUFFLY)
+Crypto Wallet DApp
 
 A decentralized application (dApp) extension to mint, manage, and display NFTs on a local blockchain using Hardhat Framework, and a React front-end.
 
